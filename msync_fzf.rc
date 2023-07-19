@@ -1,0 +1,13 @@
+#!/usr/bin/env rc
+
+./list.rc \
+	| fzf --no-sort \
+		--exact \
+		--nth 1.. \
+		--with-nth 2.. \
+		--track \
+		--preview-window wrap,top,60% \
+		--preview './preview.rc {1}' \
+		--bind 'F5:reload(msync sync > /dev/null; ./list.rc)' \
+		--bind 'enter:execute(./open.rc {1})'
+
