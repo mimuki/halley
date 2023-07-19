@@ -7,7 +7,6 @@ BEGIN {RS="--------------"}
 /^\s*$/ {next}
 { idx = 0 }
 match($0, /status id: ([^\n]+)/, m) {p[idx++] = m[1]}
-match($0, /posted on: ([^\n]+)/, m) {p[idx++] = m[1]}
 match($0, /author: ([^\n]+)/, m) {p[idx++] = m[1]}
 match($0, /boosted by: ([^\n]+)/, m) {p[idx++] = sprintf("<%s", m[1])}
 {
@@ -21,13 +20,9 @@ match($0, /boosted by: ([^\n]+)/, m) {p[idx++] = sprintf("<%s", m[1])}
 EOF
 
 awk -f $f $HOME/.config/msync/msync_accounts/*/home.list \
-	| sort -k2 \
 	| awk '{ \
-		parts = gensub(/([.:T-]|000Z)/, " ", "g", $2); \
-		d = mktime(parts); \
-		n = strftime("%F %H:%M", d); \
-		printf $1 " [" NR "] " $2 " " n " "; \
-		for (i = 3; i <= NF; i++) {printf $i " "}
+		printf $1 " [" NR "] "; \
+		for (i = 2; i <= NF; i++) {printf $i " "}
 		printf "\n"
 	}' \
 	| tac
