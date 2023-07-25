@@ -35,9 +35,7 @@ def process(url : String, status : String)
 		exit
 	end
 	if context.status_code != 200
-		puts "Couldn't get context: #{context.status}"
-		puts "url is #{url}"
-		return
+		Process.exec("xdg-open #{url}", shell: true)
 	end
 
 	c = JSON.parse(context.body)
