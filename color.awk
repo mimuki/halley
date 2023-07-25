@@ -30,7 +30,7 @@ sig { print fg(co("SIG",244), $0); next }
 {
 	nextmail = 0
 	for (i = 1; i <= NF; i++) {
-		s = gensub(/^(@[^\)]+)/, fg(co("ACTOR", 222), "\\1"), "g", $i)
+		s = gensub(/^(@[a-zA-Z0-9_\-.@]+)/, fg(co("ACTOR", 222), "\\1"), "g", $i)
 		$i = s
 	}
 	print
