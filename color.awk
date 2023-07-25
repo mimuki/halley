@@ -13,8 +13,8 @@ no_color { print; next }
 /^body: / {sub(/body: /, ""); print ""; bodyy()}
 /\r$/ { sub(/\r$/, "") }
 /^--------------$/ { nextmail = 1; print(fg(co("FF",232), $0)); next }
-/^attached/ { if (body) sub(/^/, "\n"); footer() }
-/^visibility/ { if (body) sub(/^/, "\n"); footer() }
+/^attached/ { if (body) print ""; footer() }
+/^visibility/ { if (body) print ""; footer() }
 /^--- .* ---/ { print fg(co("SEP",242), $0); ftr = 0; sig = 0; next }
 /^-----BEGIN .* SIGNATURE-----/ { sig = 1 }
 nextmail { header(); nextmail = 0 }

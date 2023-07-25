@@ -2,10 +2,10 @@ require "http/client"
 require "json"
 require "file_utils"
 
-accounts_dir = Path["~/.config/msync/msync_accounts/"].expand(home: true)
+ACCOUNTS_DIR = Path["~/.config/msync/msync_accounts/"].expand(home: true)
 
-Dir.open(accounts_dir).each_child do |child|
-	File.open(accounts_dir / child / "home.list") do |file|
+Dir.open(ACCOUNTS_DIR).each_child do |child|
+	File.open(ACCOUNTS_DIR / child / "home.list") do |file|
 		while status = file.gets("--------------\n")
 			if m = status.match(/status id: #{ARGV[0]}\nurl: (.*)/)
 				url = m[1]
@@ -27,14 +27,22 @@ def process(url : String, status : String)
 
 	context = HTTP::Client.get "#{host}/api/v1/statuses/#{id}/context"
 	if context.status_code == 401
-		# Can't do it on origin site, do it locally
+		# Can't do it on origin instance, do it on our instance
 
 		Process.run("msync queue context #{ARGV[0]}", shell: true)
 		Process.run("msync sync -m 3", shell: true)
-		Process.run("cat ~/.config/msync/msync_accounts/*/fetched/#{ARGV[0]}.list", shell: true, output: STDOUT)
-		exit
+		Dir.open(ACCOUNTS_DIR).each_child do |child|
+			filename = ACCOUNTS_DIR / child / "fetched" / "#{ARGV[0]}.list"
+			if File.exists?(filename)
+				File.open(filename) do |file|
+					IO.copy file, STDOUT
+				end
+			end
+		end
+		return
 	end
 	if context.status_code != 200
+		# Really can't do anything, fallback to outside handler
 		Process.exec("xdg-open #{url}", shell: true)
 	end
 
@@ -65,7 +73,7 @@ def display(host : String, status : JSON::Any)
 	end
 
 	print "body: "
-	puts io.to_s
+	puts io.to_s.strip
 
 	puts "visibility: #{status["visibility"]}"
 
