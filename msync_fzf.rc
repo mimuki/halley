@@ -9,9 +9,10 @@
 		--preview-window wrap,bottom,60% \
 		--preview './preview.rc {1}' \
 		--bind 'F5:reload(msync sync -m 3 > /dev/null; ./list.rc)' \
-		--bind 'enter:execute-silent(tmux split-window -h "./open {1} | ./color.awk; read -P \"\"")' \
+		--bind 'enter:execute-silent(tmux split-window -h "./open {1} | ./color.awk | bat -p " ";" resize-pane -x 80)' \
 		--bind 'ctrl-s:execute-silent(msync queue fav {1})' \
 		--bind 'ctrl-u:execute-silent(msync queue boost {1})' \
+		--bind 'ctrl-n:first' \
 		--color 'bg+:#8b1b82,gutter:236'
 
 
