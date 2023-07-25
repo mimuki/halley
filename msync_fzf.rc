@@ -8,8 +8,8 @@
 		--track \
 		--preview-window wrap,bottom,60% \
 		--preview './preview.rc {1}' \
-		--bind 'enter:execute(./open.rc {1})' \
 		--bind 'F5:reload(msync sync -m 3 > /dev/null; ./list.rc)' \
+		--bind 'enter:execute-silent(tmux split-window -h "./open {1} | ./color.awk; read -P \"\"")' \
 		--bind 'ctrl-s:execute-silent(msync queue fav {1})' \
 		--bind 'ctrl-u:execute-silent(msync queue boost {1})' \
 		--color 'bg+:#8b1b82,gutter:236'
