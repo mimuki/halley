@@ -16,50 +16,43 @@ Dir.open(ACCOUNTS_DIR).each_child do |child|
 end
 
 def process(url : String, status : String)
-	m = url.match(/(https:\/\/[^\/]+)\/.*\/([0-9]+).*/)
-	if !m
-		puts "Couldn't match host and id"
-		exit
-	end
-
-	host = m[1]
-	id = m[2]
-
-	context = HTTP::Client.get "#{host}/api/v1/statuses/#{id}/context"
-	if context.status_code == 401
-		# Can't do it on origin instance, do it on our instance
-
-		Process.run("msync queue context #{ARGV[0]}", shell: true)
-		Process.run("msync sync -m 3", shell: true)
-		Dir.open(ACCOUNTS_DIR).each_child do |child|
-			filename = ACCOUNTS_DIR / child / "fetched" / "#{ARGV[0]}.list"
-			if File.exists?(filename)
-				File.open(filename) do |file|
-					IO.copy file, STDOUT
-				end
-			end
+	context = get_context url
+	if !context
+		# Sometimes the url we have is the one to the AP object and not
+		# the mastodon-specific one, so we need a level of indirection
+		# to get it
+		res = HTTP::Client.get url
+		if res.status_code == 302
+			u = URI.parse url
+			location = res.headers["location"]
+			url = "#{u.scheme}://#{u.host}/#{location}"
+			context = get_context url
 		end
-		return
 	end
-	if context.status_code != 200
-		# Really can't do anything, fallback to outside handler
+
+	if !context
+		puts "Couldn't find match for #{url}"
 		Process.exec("xdg-open #{url}", shell: true)
 	end
 
 	c = JSON.parse(context.body)
-	c["ancestors"].as_a.each {|status| display host, status}
+	if !c.as_h?
+		puts "Couldn't find match for #{url}"
+		Process.exec("xdg-open #{url}", shell: true)
+	end
+	c["ancestors"].as_a.each {|status| display status}
 	puts status
-	c["descendants"].as_a.each {|status| display host, status}
+	c["descendants"].as_a.each {|status| display status}
 end
 
-def display(host : String, status : JSON::Any)
+def display(status : JSON::Any)
 	author = status["account"].as_h
 	name = author["display_name"].as_s
 
 	id = author["acct"].as_s
 	if !id.matches?(/\@/)
-		domain = host.gsub(/https:\/\//, "")
-		id = "#{id}@#{domain}"
+		u = URI.parse author["url"].as_s
+		id = "#{id}@#{u.host}"
 	end
 	id = "@#{id}"
 
@@ -88,4 +81,44 @@ def display(host : String, status : JSON::Any)
 	replies = status["replies_count"].as_i
 	puts "#{favs} favs | #{boosts} boosts | #{replies} replies"
 	puts "--------------\n"
+end
+
+def get_context(url : String)
+	pattern = /.*\/(.+)$/
+
+	u = URI.parse url
+	if !u.scheme || !u.host
+		return
+	end
+	base = "#{u.scheme}://#{u.host}"
+
+	if m = url.match(pattern)
+		id = m[1]
+	end
+
+	if !base || !id
+		return
+	end
+
+	context_url = "#{base}/api/v1/statuses/#{id}/context"
+	context = HTTP::Client.get context_url
+	if context.status_code == 401
+		# Can't do it on origin instance, do it on our instance
+
+		Process.run("msync queue context #{ARGV[0]}", shell: true)
+		Process.run("msync sync -m 3", shell: true)
+		Dir.open(ACCOUNTS_DIR).each_child do |child|
+			filename = ACCOUNTS_DIR / child / "fetched" / "#{ARGV[0]}.list"
+			if File.exists?(filename)
+				File.open(filename) do |file|
+					IO.copy file, STDOUT
+				end
+			end
+		end
+		exit
+	elsif context.status_code != 200
+		return
+	end
+
+	return context
 end
