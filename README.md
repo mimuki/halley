@@ -1,6 +1,6 @@
 # msync_fzf
 
-A fzf-based mastodon timeline browser. Uses msync (https://github.com/Kansattica/msync) for actual interaction, and fzf (https://github.com/junegunn/fzf) for presentation: this repo is just a bunch of scripts to glue it all.
+A fzf-based mastodon timeline browser. Uses msync at <https://github.com/Kansattica/msync> for actual interaction, and fzf at <https://github.com/junegunn/fzf> for presentation: this repo is just a bunch of scripts to glue it all.
 
 ## Screenshots
 
@@ -58,4 +58,4 @@ Maybe add a `@` at the beginning of the line to surface them ?
 
 Parity Public License 7.0.0
 
-See [LICENSE](./LICENSE) for the full text, or https://paritylicense.com/versions/7.0.0.html for more details
+See [LICENSE](./LICENSE) for the full text, or <https://paritylicense.com/versions/7.0.0.html> for more details
