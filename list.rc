@@ -5,26 +5,29 @@ cat <<'EOF' >$f
 BEGIN {RS="--------------"}
 
 /^\s*$/ {next}
+/boosted by: ([^\n]+)/ {next}
 { idx = 0 }
 match($0, /status id: ([^\n]+)/, m) {p[idx++] = m[1]}
-match($0, /author: ([^\n]+)/, m) {p[idx++] = m[1]}
-match($0, /boosted by: ([^\n]+)/, m) {p[idx++] = sprintf("<%s", m[1])}
+match($0, /cw: ([^\n]+)/, m) {p[idx++] = sprintf("cw: %s · ", m[1])}
+match($0, /author: ([^\n:()]+)/, m) {p[idx++] = m[1]}
+
+
 {
-	for (i in p) {
-		printf(p[i] " ")
-	}
-	print ""
-	delete p
-	next
+  for (i in p) {
+    printf(p[i] " ")
+  }
+  print ""
+    delete p
+    next
 }
 EOF
 
-awk -f $f $HOME/.config/msync/msync_accounts/*/home.list \
-	| awk '{ \
-		printf $1 " [" NR "] "; \
-		for (i = 2; i <= NF; i++) {printf $i " "}
-		printf "\n"
-	}' \
-	| tac
+awk -f $f $HOME/.config/msync/msync_accounts/$1/home.list \
+      | awk '{ \
+        printf $1 " [" NR "] "; \
+          for (i = 2; i <= NF; i++) {printf $i " " }
+        printf "\n"
+      }' \
+        | tac
 
-rm $f
+        rm $f

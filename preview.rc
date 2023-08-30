@@ -2,14 +2,35 @@
 
 
 awk 'BEGIN {RS="--------------\n"} /status id: '$1'/ {print}' $HOME/.config/msync/msync_accounts/*/home.list \
-	| fold -s -w 120 \
-	| awk '
-		/^status id: / 	{next} \
-		/^url: / 	{next} \
-		/^boosted by: / {sub(/^boosted by: /, "△ "); print; next} \
-		/^reply to: / 	{next} \
-		/^boost of: /	{next} \
-		/^[0-9]+favs.*[0-9]+boosts.*[0-9]+replies$/ {next} \
-		{print} \
-	' \
-	| ./color.awk
+  | awk '!a[$0]++' \
+  | awk '
+    /^status id: / {next} 
+    /^url: / {next} 
+    /^author: / {
+      sub(/^author: /, " "); 
+      print;
+      next                    
+    }                         
+
+    /^reply to: / {next}
+    /^cw: / { print; next }
+    /^attached:.*$/ {next} 
+    /^http.*$/ {next} 
+                
+    /^body: / { post=1 }
+    /^visibility: / { post=0 }
+    post
+
+    /^visibility: public/   { visibility = "\n"; next }                          
+    /^visibility: unlisted/ { visibility = "\n"; next }                          
+    /^visibility: private/  { visibility = "\n"; next }        
+
+    /^posted on: / {next} 
+
+    /^[0-9]+ favs \| / {
+      sub(/^[0-9]+ favs \| [0-9]+ boosts \| /, ""); 
+      print visibility, $(NF-1), "replies"; 
+      next; 
+    }
+  ' \
+  | ./color.awk
