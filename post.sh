@@ -1,6 +1,13 @@
-ACCOUNT=$1 
+ACCOUNT=$1
+REPLYID=$2
 
-msync generate 
+# -n = if the length of the string is non-zero (you pressed the reply binding)
+if [ -n "$REPLYID" ]
+  then
+    msync generate --reply-to $REPLYID
+  else
+    msync generate 
+fi
 vim "new_post"
 
 # -s = if the file exists and has a non-zero size

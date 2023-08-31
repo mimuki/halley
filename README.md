@@ -41,6 +41,8 @@ Multi account support- you can browse the timeline of, boost, favourite, and syn
 
 Boosted posts get filtered out, since they only show a link to the original post anyway.
 
+Write posts & replies!
+
 Various other little tweaks per my personal preference
 
 ### Shortcuts
@@ -48,6 +50,7 @@ Various other little tweaks per my personal preference
 - enter will open the link to the post in your browser
 - F5 refreshes the list
 - ctrl-p to write and queue a post
+- ctrl-r to write and queue a reply to the selected post
 - ctrl-b (changed from ctrl-u) to queue boosting a post
 - ctrl-f (changed from ctrl-s) to queue favouriting a post
 - ctrl-space to toggle the post preview (useful if the next post has a CW you don't want to open)
@@ -72,7 +75,7 @@ Things that are interesting to dig:
 
 - there's a way with msync to request the context for a post, fetching the earlier posts in the thread when you sync next... that would be cool
 
-- No built-in reply yet, if you can tell post.sh the post ID it should be straightforward?
+- being able to reply is nice, but automatically setting the post privacy and CW based on the original post would be nice
 
 - "One line per status" makes scrolling kinda easier because you skip by whole status, but it also means less information displayed at each time. Maybe FZF isn't the right approach ?
 

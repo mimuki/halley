@@ -15,6 +15,7 @@ ACCOUNT=$1
 		--bind 'ctrl-f:execute-silent(msync queue fav {1} -a $ACCOUNT)' \
 		--bind 'ctrl-b:execute-silent(msync queue boost {1} --account $ACCOUNT)' \
 		--bind 'ctrl-p:execute(./post.sh $ACCOUNT)'\
+		--bind 'ctrl-r:execute(./post.sh $ACCOUNT {1})'\
                 --bind 'ctrl-e:first' \
 		--bind 'ctrl-i:last' \
 		--bind 'ctrl-space:change-preview-window(hidden|)' \
