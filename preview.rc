@@ -28,7 +28,7 @@ awk 'BEGIN {RS="--------------\n"} /status id: '$1'/ {print}' $HOME/.config/msyn
       post=1
     }
 
-    # there's a few possible next fields, not all are mandatory 
+    # theres a few possible next fields, not all are mandatory 
     /^attached: / { post=0 }
     /^visibility: / { post=0 }
     post
