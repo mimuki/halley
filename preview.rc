@@ -4,29 +4,50 @@
 awk 'BEGIN {RS="--------------\n"} /status id: '$1'/ {print}' $HOME/.config/msync/msync_accounts/*/home.list \
   | awk '!a[$0]++' \
   | awk '
-    /^status id: / {next} 
-    /^url: / {next} 
+
+    /^status id: / { next } 
+    /^url: / { next }
+
+    # post author
     /^author: / {
       sub(/^author: /, " "); 
       print;
       next                    
     }                         
 
-    /^reply to: / {next}
+    /^reply to: / { next }
     /^cw: / { print; next }
-    /^attached:.*$/ {next} 
-    /^http.*$/ {next} 
-                
-    /^body: / { post=1 }
+    /^attached:.*$/ { next } 
+    /^http.*$/ { next } 
+    
+    # post every line in the body
+    # (with a newline at the top for spacing)
+    /^body: / { 
+      sub(/body: /, "");
+      print "";
+      post=1
+    }
+
     /^visibility: / { post=0 }
     post
 
+    # Save the visibility info for later
     /^visibility: public/   { visibility = "\n"; next }                          
     /^visibility: unlisted/ { visibility = "\n"; next }                          
     /^visibility: private/  { visibility = "\n"; next }        
 
-    /^posted on: / {next} 
+    # Image/video/audio descriptions
+    /^description: / { 
+      print "" # Add a newline for spacing
+      print; 
+      next 
+    }
 
+    # Timestamps
+    /^posted on: / { next } 
+
+    # Display the visibility & number of replies on a single line
+    # Favourite and boost numbers intentionally left off :) 
     /^[0-9]+ favs \| / {
       sub(/^[0-9]+ favs \| [0-9]+ boosts \| /, ""); 
       print visibility, $(NF-1), "replies"; 
