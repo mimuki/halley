@@ -9,8 +9,9 @@ BEGIN {RS="--------------"}
 { idx = 0 }
 match($0, /status id: ([^\n]+)/, m) {p[idx++] = m[1]}
 match($0, /cw: ([^\n]+)/, m) {p[idx++] = sprintf("cw: %s · ", m[1])}
-match($0, /author: ([^\n:()]+)/, m) {p[idx++] = m[1]}
 
+# To show username instead of nick, change m[1] to m[2]
+match($0, /author: ([^\n]+) \((@[^\n]+)\)/, m) {p[idx++] = m[1]}
 
 {
   for (i in p) {
