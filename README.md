@@ -1,6 +1,6 @@
 # msync_fzf
 
-A fzf-based mastodon timeline browser. Uses msync at <https://github.com/Kansattica/msync> for actual interaction, and fzf at <https://github.com/junegunn/fzf> for presentation: this repo is just a bunch of scripts to glue it all.
+A fzf-based fedi timeline browser, for Mastodon and anything that supports the Mastodon API. Uses msync at <https://github.com/Kansattica/msync> for actual interaction, and fzf at <https://github.com/junegunn/fzf> for presentation: this repo is just a bunch of scripts to glue it all.
 
 Hacked extensively to do strange things- features are duct taped on, and will break if you look at them funny. The original is <https://git.sr.ht/~rakoo/msync_fzf>, if you want that.
 
@@ -24,10 +24,11 @@ A picture is worth a thousands words, right
 FZF launches with all statuses, last one at the bottom. Here's an example of line:
 
 ```
-[1438] Rob Ricci
+[1438] cw: crime · Rob Ricci
 ```
 
 - an index that makes it easier to follow when updating the list
+- the content warning, if there is one
 - the author's nickname (the original has more info, but that's not my jam)
 
 
@@ -56,6 +57,8 @@ Various other little tweaks per my personal preference
 - ctrl-space to toggle the post preview (useful if the next post has a CW you don't want to open)
 - ctrl-e to jump to oldest post
 - ctrl-i to jump to newest
+- shift-e to scroll preview down
+- shift-i to scroll preview up
 
 ### Hack / To Be Hacked
 
@@ -75,7 +78,9 @@ Things that are interesting to dig:
 
 - there's a way with msync to request the context for a post, fetching the earlier posts in the thread when you sync next... that would be cool
 
-- being able to reply is nice, but automatically setting the post privacy and CW based on the original post would be nice
+- being able to reply is nice, but automatically setting the post privacy based on the original post would be nice
+
+- browsing your queued posts, and being able to easily reply/edit/delete them?
 
 - "One line per status" makes scrolling kinda easier because you skip by whole status, but it also means less information displayed at each time. Maybe FZF isn't the right approach ?
 
