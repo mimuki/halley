@@ -21,7 +21,7 @@ no_color { next }
 {
 
   for (i = 1; i <= NF; i++) {
-    s = gensub(/^(@[a-zA-Z0-9_\-.@]+)/, recolour("222", "\\1"), "g", $i)
+    s = gensub(/^(@[a-zA-Z0-9_\-.@]+)/, recolour("2", "\\1"), "g", $i)
     $i = s
   }
 

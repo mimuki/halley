@@ -8,7 +8,7 @@ ACCOUNT=$1
 		--nth 1.. \
 		--with-nth 2.. \
 		--track \
-		--preview-window bottom:wrap,80% \
+		--preview-window bottom:wrap,80%,border-double \
 		--preview './preview.rc {1}' \
 		--bind 'F5:reload(msync sync -m 3 -a $ACCOUNT > /dev/null; ./list.rc $ACCOUNT)' \
 		--bind 'enter:execute-silent(tmux split-window -h "./open {1} | ./color.awk | less -R" ";" resize-pane -x 80)' \
@@ -19,12 +19,12 @@ ACCOUNT=$1
                 --bind 'ctrl-e:first' \
 		--bind 'ctrl-i:last' \
 		--bind 'ctrl-space:change-preview-window(hidden|)' \
-                --color 'gutter:#282a36,border:#282a36,pointer:#8be9fd,spinner:#ff79c6'\
+                --color 'hl:green,fg+:-1,bg+:black,gutter:-1,border:bright-black,pointer:cyan,spinner:bright-magenta,preview-label:magenta,info:-1'\
                 -i \
                 --border=none\
                 --info=inline-right\
                 --no-scrollbar\
                 --scroll-off=1\
-                --header=$ACCOUNT\
+                --preview-label=$ACCOUNT\
                 --header-first
 
