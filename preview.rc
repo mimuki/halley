@@ -4,7 +4,8 @@
 awk 'BEGIN {RS="--------------\n"} /status id: '$1'/ {print}' $HOME/.config/msync/msync_accounts/*/home.list \
   | awk '!a[$0]++' \
   | awk '
-
+    /^notification id: / { next }
+    /^at ([0-9]+-)+/ { next }
     /^status id: / { next } 
     /^url: / { next }
 

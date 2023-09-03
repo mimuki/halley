@@ -1,0 +1,46 @@
+#!/usr/bin/env rc
+
+f=`{mktemp}
+cat <<'EOF' >$f
+BEGIN {RS="--------------"}
+
+/^\s*$/ {next}
+{ idx = 0 }
+
+match($0, /status id: ([^\n]+)/, m) {p[idx++] = m[1]}
+
+# m[1]: 2023-07-20
+# m[2]: 20 (yeah idk how to make it Not get this)
+# m[3]: 12:54
+# m[4]: George Nickname Guy
+# m[5]: @georg@example.com
+# m[6]: favorited
+match($0, /at (([0-9]+-?)+)T([0-9]+:[0-9]+):[0-9]+.[0-9]+Z, ([^\n]+) \((@[^\n]+)\)'?s? (\w+|?)/, m) {
+# TODO: pick icons that look good!
+  if (m[6] == "favorited" ) { m[6] = "󰋑 " } 
+  if (m[6] == "boosted"   ) { m[6] = "! " }
+  if (m[6] == "mentioned" ) { m[6] = "@ " }
+  if (m[6] == "poll"      ) { m[6] = "/ " }
+  if (m[6] == "?"         ) { m[6] = "? " }
+  p[idx++] = sprintf(m[6] m[4])
+  }
+
+{
+  for (i in p) {
+    printf(p[i] " ")
+  }
+  print ""
+    delete p
+    next
+}
+EOF
+
+awk -f $f $HOME/.config/msync/msync_accounts/$1/notifications.list \
+      | awk '{ \
+        printf $1 " [" NR "] "; \
+          for (i = 2; i <= NF; i++) {printf $i " " }
+        printf "\n"
+      }' \
+        | tac
+
+        rm $f
