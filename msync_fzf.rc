@@ -1,32 +1,33 @@
 #!/usr/bin/env rc
 
 ACCOUNT=$1 
-./list.rc $ACCOUNT \
-          | fzf --no-sort \
-                --tac \
-		--exact \
-		--nth 1.. \
-		--with-nth 2.. \
-		--track \
-		--preview-window bottom:wrap,80%,border-double \
-		--preview './preview.rc {1}' \
-                --bind 'E:preview-down' \
-                --bind 'I:preview-up' \
-		--bind 'F5:reload(msync sync -m 3 -a $ACCOUNT > /dev/null; ./list.rc $ACCOUNT)' \
-		--bind 'enter:execute-silent(tmux split-window -h "./open {1} | ./color.awk | less -R" ";" resize-pane -x 80)' \
-		--bind 'ctrl-f:execute-silent(msync queue fav {1} -a $ACCOUNT)' \
-		--bind 'ctrl-b:execute-silent(msync queue boost {1} --account $ACCOUNT)' \
-		--bind 'ctrl-p:execute(./post.sh $ACCOUNT)'\
-		--bind 'ctrl-r:execute(./post.sh $ACCOUNT {1})'\
-                --bind 'ctrl-e:first' \
-		--bind 'ctrl-i:last' \
-		--bind 'ctrl-space:change-preview-window(hidden|)' \
-                --color 'hl:green,fg+:-1,bg+:black,gutter:-1,border:bright-black,pointer:cyan,spinner:bright-magenta,preview-label:magenta,info:-1'\
-                -i \
-                --border=none\
-                --info=inline-right\
-                --no-scrollbar\
-                --scroll-off=1\
-                --preview-label=$ACCOUNT\
-                --header-first
+./list.rc $ACCOUNT | \
+fzf --no-sort \
+    --tac \
+    --exact \
+    --nth 1.. \
+    --with-nth 2.. \
+    --track \
+    --preview-window bottom:wrap,80%,border-double \
+    --preview './preview.rc {1}' \
+    --bind 'E:preview-down' \
+    --bind 'I:preview-up' \
+    --bind 'F5:reload(msync sync -m 3 -a $ACCOUNT > /dev/null; ./list.rc $ACCOUNT)' \
+    --bind 'enter:execute-silent(tmux split-window -h "./open {1} | ./color.awk | less -R" ";" resize-pane -x 80)' \
+    --bind 'ctrl-f:execute-silent(msync queue fav {1} -a $ACCOUNT)' \
+    --bind 'ctrl-b:execute-silent(msync queue boost {1} --account $ACCOUNT)' \
+    --bind 'ctrl-p:execute(./post.sh $ACCOUNT)'\
+    --bind 'ctrl-r:execute(./post.sh $ACCOUNT {1})'\
+    --bind 'ctrl-e:first' \
+    --bind 'ctrl-i:last' \
+    --bind 'ctrl-space:change-preview-window(hidden|)' \
+    --color 'hl:green,fg+:-1,bg+:black,gutter:-1,border:bright-black,pointer:cyan,spinner:bright-magenta,preview-label:magenta,info:-1'\
+    -i \
+    --border=none\
+    --info=inline-right\
+    --no-scrollbar\
+    --scroll-off=1\
+    --preview-label=' '$ACCOUNT' '\
+    --preview-label-pos=4\
+    --header-first
 
