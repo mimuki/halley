@@ -3,7 +3,6 @@
 ACCOUNT=$1 
 ./notif.rc $ACCOUNT | \
 fzf --no-sort \
-    --tac \
     --exact \
     --nth 1.. \
     --with-nth 2.. \
