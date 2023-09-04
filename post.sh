@@ -15,7 +15,7 @@ then
   # awk to check if the status has a CW
   # then cut off the "cw: " part if it does
   CW="$(awk "/^status id: $REPLYTO/ {f=1} f && /^-----/ {exit} f && /cw:/ {print; exit}" $DIR/home.list | cut -c 5-)"
-
+  AUTHOR="$(awk "/^status id: $REPLYTO/ {f=1} f && /^-----/ {exit} f && match(\$0, /author: ([^\n]+) \((@[^\n]+)\)/, m) {print m[2]; exit }" $DIR/home.list)"
   # TODO: this but good
   if [ -n "$CW" ]
   then
@@ -30,7 +30,8 @@ fi
 # Jump to end of file, ready to write a post
 # caveat: you need to q! even if you haven't done anything else,
 # since by adding a new line it modifies the file
-vim -c 'execute "normal GGo"' $TITLE
+# We type mentions here, because prefilling them with msync means quitting will still queue a post.
+vim -c 'execute "normal GGo'$AUTHOR' "' $TITLE
 
 # -s = if the file exists and has a non-zero size
 if [ -s "$TITLE" ]
