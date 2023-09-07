@@ -15,8 +15,12 @@ then
   # awk to check if the status has a CW
   # then cut off the "cw: " part if it does
   CW="$(awk "/^status id: $REPLYTO/ {f=1} f && /^-----/ {exit} f && /cw:/ {print; exit}" $DIR/home.list | cut -c 5-)"
+  # Get the @ of who you're replying to
+  # This doesn't automatically mention other people
+  # like people who the post mentions (that arent the poster)
+  # ...arguably, this is a feature
   AUTHOR="$(awk "/^status id: $REPLYTO/ {f=1} f && /^-----/ {exit} f && match(\$0, /author: ([^\n]+) \((@[^\n]+)\)/, m) {print m[2]; exit }" $DIR/home.list)\<Space>"
-  # TODO: this but good
+  # TODO: this looks ugly, i should learn a better way
   if [ -n "$CW" ]
   then
     msync generate --reply-to $REPLYTO --reply-id $ID --output $TITLE --content-warning "$CW"
@@ -27,12 +31,14 @@ else
   msync generate --reply-id $ID --output $TITLE
 fi
 
-# Jump to end of file, ready to write a post
-# caveat: you need to q! even if you haven't done anything else,
-# since by adding a new line it modifies the file
-# We type mentions here, because prefilling them with msync means quitting will still queue a post.
 
-# Go to end of post, insert the mention on a new line, then go to the end of the line (after the space!) & enter insert mode.
+# Go to end of post, insert the mention on a new line, then go to the end of 
+#   the line (after the space!) & enter insert mode.
+#   caveat: you need to q! even if you haven't done anything else,
+#   since by adding a new line it modifies the file
+
+# We type mentions like this, because prefilling them with msync means quitting 
+#   will still queue a post (because it technically has a body)
 vim -c 'execute "normal GGo'$AUTHOR'"' -c 'startinsert' -c 'execute "normal $"' $TITLE
 
 # -s = if the file exists and has a non-zero size

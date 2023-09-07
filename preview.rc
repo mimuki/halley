@@ -1,6 +1,6 @@
 #!/usr/bin/env rc
 
-awk 'BEGIN {RS="--------------\n"} /status id: '$1'/ {print}' $HOME/.config/msync/msync_accounts/*/home.list \
+awk 'BEGIN {RS="--------------\n"} /status id: '$1'/ {print}' $HOME/.config/msync/msync_accounts/$2/home.list \
   | awk '!a[$0]++' \
   | awk '
     # Set text colour, using terminal colour codes

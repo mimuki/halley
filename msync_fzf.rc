@@ -8,7 +8,7 @@ fzf --no-sort \
     --with-nth 2.. \
     --track \
     --preview-window bottom:wrap,80%,border-double \
-    --preview './preview.rc {1}' \
+    --preview './preview.rc {1} $ACCOUNT' \
     --bind 'E:preview-down' \
     --bind 'I:preview-up' \
     --bind 'F5:reload(msync sync -m 3 -a $ACCOUNT > /dev/null; ./list.rc $ACCOUNT)' \
