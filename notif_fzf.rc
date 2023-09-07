@@ -28,5 +28,5 @@ fzf --no-sort \
     --scroll-off=1\
     --preview-label=' '$ACCOUNT' '\
     --preview-label-pos=4\
-    --header-first
-
+    --header-first \
+    --exit-0
