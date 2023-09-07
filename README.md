@@ -11,9 +11,9 @@ The icons assume you're using <https://github.com/slavfox/Cozette>, I haven't ch
 A picture is worth a thousands words, right
 
 
-![viewing the home timeline in msync_fzf](./example.png)
+![viewing the home timeline, with highlighted mentions and hashtags](./example.png)
 
-![demonstration of post filtering, showing a post from Adrian Roselli about pointlessly gendered earplugs](./filtered.png)
+![demonstration of timeline search, showing a post from Robert Kingett about tech bros and ebooks](./filtered.png)
 
 ## Usage
 
@@ -83,6 +83,8 @@ Things that are interesting to dig:
 - being able to reply is nice, but automatically setting the post privacy based on the original post would be nice
 
 - browsing your queued posts, and being able to easily reply/edit/delete them?
+
+- Some way of "remembering" your last viewed post, or jumping to the start of the last sync on launch?
 
 ## License
 
