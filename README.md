@@ -42,6 +42,8 @@ Multi account support- you can browse the timeline of, boost, favourite, and syn
 
 Boosted posts get filtered out, since they only show a link to the original post anyway.
 
+Content warnings that hide the post by default! To see the post, wait 5 seconds and it'll display the contents.
+
 Write posts & replies!
 
 Various other little tweaks per my personal preference
@@ -68,7 +70,7 @@ Things that are interesting to dig:
 
 - Add your own shortcuts, or change them by editing the source code directly
 
-- Check out `color.awk` to see what colors you can use, change them, etc..
+- Check out `preview.rc` to tweak what the preview window shows (enable favourites, change colours, that sort of thing)
 
 - handle showing notifications, or making posts that mention you more prominent?
 
@@ -81,8 +83,6 @@ Things that are interesting to dig:
 - being able to reply is nice, but automatically setting the post privacy based on the original post would be nice
 
 - browsing your queued posts, and being able to easily reply/edit/delete them?
-
-- "One line per status" makes scrolling kinda easier because you skip by whole status, but it also means less information displayed at each time. Maybe FZF isn't the right approach ?
 
 ## License
 
