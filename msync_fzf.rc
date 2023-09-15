@@ -12,8 +12,9 @@ fzf --no-sort \
     --bind 'E:preview-down' \
     --bind 'I:preview-up' \
     --bind 'F5:reload(msync sync -m 3 -a $ACCOUNT > /dev/null; ./list.rc $ACCOUNT)' \
-    --bind 'ctrl-f:execute-silent(msync queue fav {1} -a $ACCOUNT)' \
+    --bind 'ctrl-f:execute-silent(msync queue fav {1} --account $ACCOUNT)' \
     --bind 'ctrl-b:execute-silent(msync queue boost {1} --account $ACCOUNT)' \
+    --bind 'ctrl-n:execute(./notif_fzf.rc $ACCOUNT)'\
     --bind 'ctrl-p:execute(./post.sh $ACCOUNT)'\
     --bind 'ctrl-r:execute(./post.sh $ACCOUNT {1})'\
     --bind 'ctrl-e:first' \
@@ -25,7 +26,7 @@ fzf --no-sort \
     --info=inline-right\
     --no-scrollbar\
     --scroll-off=1\
-    --preview-label=' '$ACCOUNT' '\
+    --preview-label='  '$ACCOUNT' '\
     --preview-label-pos=4\
     --header-first \
     --exit-0

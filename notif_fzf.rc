@@ -26,7 +26,7 @@ fzf --no-sort \
     --info=inline-right\
     --no-scrollbar\
     --scroll-off=1\
-    --preview-label=' '$ACCOUNT' '\
+    --preview-label='  '$ACCOUNT' '\
     --preview-label-pos=4\
     --header-first \
     --exit-0
