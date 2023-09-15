@@ -60,21 +60,24 @@ awk 'BEGIN {RS="--------------\n"} /status id: '$1'/ {print}' $HOME/.config/msyn
       post=1
     }
 
-    /^description: / { post=0 }
-    /^visibility: / { post=0 }
-    post
-
-    # Save the visibility info for later
-    /^visibility: public/   { visibility = "\n"; next }                          
-    /^visibility: unlisted/ { visibility = "\n"; next }                          
-    /^visibility: private/  { visibility = "\n"; next }        
-
-    # Image/video/audio descriptions
     /^description: / { 
       print "" # Add a newline for spacing
-      print; 
-      next 
+      post=0;
+      altText=1
     }
+
+    /^visibility: / {
+      post=0;
+      altText=0
+    }
+    post
+    altText
+
+    # Save the visibility info for later
+    /^visibility: public/   { visibility = "\n📡"; next }                          
+    /^visibility: unlisted/ { visibility = "\n📖"; next }                          
+    /^visibility: private/  { visibility = "\n🔒"; next }        
+    /^visibility: direct/   { visibility = "\n🎁"; next }        
 
     # Timestamps
     /^posted on: / { next } 
