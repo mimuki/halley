@@ -4,8 +4,7 @@ A fzf-based fedi timeline browser, for Mastodon and anything that supports the M
 
 Hacked extensively to do strange things- features are duct taped on, and will break if you look at them funny. The original is <https://git.sr.ht/~rakoo/msync_fzf>, if you want that.
 
-The icons assume you're using <https://github.com/slavfox/Cozette>, I haven't checked if all the ones i'm using are in the PUA or not. My bad.
-
+The icons assume you're using <https://github.com/slavfox/Cozette>, and a few icons are PUA characters. My bad.
 ## Screenshots
 
 A picture is worth a thousands words, right
@@ -50,8 +49,8 @@ Various other little tweaks per my personal preference
 
 ### Shortcuts
 
-- enter will open the link to the post in your browser
 - F5 refreshes the list
+- ctrl-n to view notifications (you can exclude boosts/favs/polls in msync's settings)
 - ctrl-p to write and queue a post
 - ctrl-r to write and queue a reply to the selected post
 - ctrl-b (changed from ctrl-u) to queue boosting a post
@@ -71,8 +70,6 @@ Things that are interesting to dig:
 - Add your own shortcuts, or change them by editing the source code directly
 
 - Check out `preview.rc` to tweak what the preview window shows (enable favourites, change colours, that sort of thing)
-
-- handle showing notifications, or making posts that mention you more prominent?
 
 - I added multi account support, but why not default to the old behaviour if no account is given?
 
