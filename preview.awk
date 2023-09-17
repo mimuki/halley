@@ -148,6 +148,8 @@ $HOME/.config/msync/msync_accounts/$2/home.list \
       } else {
         meridiem = "PM"
         hour = hour - 12
+        # 12PM noon
+        if (hour == 0) { hour = 12 }
       }
          
       day = UTCday + dayAdjustment
