@@ -205,8 +205,6 @@ $HOME/.config/msync/msync_accounts/$2/home.list \
           yearAdjustment = -1
         }
       } 
-
-      month = sprintf("%02d", month)
       year = UTCyear + yearAdjustment
 
       # Needed because we check two files that may differ- if a post is in both the home TL
