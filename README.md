@@ -5,9 +5,11 @@ A fzf-based fedi timeline browser, for Mastodon and anything that supports the M
 Hacked extensively to do strange things- features are duct taped on, and will break if you look at them funny. The original is <https://git.sr.ht/~rakoo/msync_fzf>, if you want that.
 
 The icons assume you're using <https://github.com/slavfox/Cozette>, and a few icons are PUA characters. My bad.
+
 ## Screenshots
 
 ![viewing the home timeline, with highlighted mentions and hashtags](./example.png)
+![viewing the notifications list](./notifications.png)
 
 ![demonstration of timeline search, showing a post from Robert Kingett about tech bros and ebooks](./filtered.png)
 
