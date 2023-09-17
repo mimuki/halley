@@ -1,5 +1,3 @@
-#!/usr/bin/env rc
-
 awk 'BEGIN {RS="--------------\n"} /status id: '$1'/ {print}' \
 $HOME/.config/msync/msync_accounts/$2/notifications.list \
 $HOME/.config/msync/msync_accounts/$2/home.list \
