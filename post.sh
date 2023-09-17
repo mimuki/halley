@@ -1,5 +1,9 @@
 ACCOUNT=$1
-REPLYTO=$2
+# the %_* keeps everything before an _
+# so the entire ID for normal posts, and the actual ID for queued posts
+# (which otherwise would get the entire filename, like 2_10:48)
+REPLYTO=${2%_*}
+MODE=$3
 DIR=$HOME/.config/msync/msync_accounts/$ACCOUNT/
 
 # Number of posts in the queue
@@ -19,7 +23,13 @@ then
   # This doesn't automatically mention other people
   # like people who the post mentions (that arent the poster)
   # ...arguably, this is a feature
-  AUTHOR="$(awk "/^status id: $REPLYTO/ {f=1} f && /^-----/ {exit} f && match(\$0, /author: ([^\n]+) \((@[^\n]+)\)/, m) {print m[2]; exit }" $DIR/home.list)\<Space>"
+  if [ $MODE != "queue" ]
+  then
+    AUTHOR="$(awk "/^status id: $REPLYTO/ {f=1} f && /^-----/ {exit} f && match(\$0, /author: ([^\n]+) \((@[^\n]+)\)/, m) {print m[2]; exit }" $DIR/home.list)\<Space>"
+  else
+    # If it's in your queue, the author is you
+    AUTHOR="@${ACCOUNT%@*}\<Space>"
+  fi
   # TODO: this looks ugly, i should learn a better way
   if [ -n "$CW" ]
   then
