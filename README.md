@@ -39,6 +39,7 @@ Various other little tweaks per my personal preference
 
 - F5 refreshes the list
 - ctrl-n to view notifications (you can exclude boosts/favs/polls in msync's settings)
+- ctrl-q to view queued posts (then ctrl-v to edit a post) 
 - ctrl-p to write and queue a post
 - ctrl-r to write and queue a reply to the selected post
 - ctrl-b (changed from ctrl-u) to queue boosting a post

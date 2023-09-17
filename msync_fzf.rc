@@ -27,6 +27,7 @@ fzf --no-sort \
     --bind 'ctrl-b:execute-silent(msync queue boost {1} --account $ACCOUNT)' \
     --bind 'ctrl-n:execute(./msync_fzf.rc $ACCOUNT notifications)'\
     --bind 'ctrl-p:execute(./post.sh $ACCOUNT)'\
+    --bind 'ctrl-q:execute(./queue.rc $ACCOUNT)'\
     --bind 'ctrl-r:execute(./post.sh $ACCOUNT {1} $MODE)'\
     --bind 'ctrl-e:first' \
     --bind 'ctrl-i:last' \
