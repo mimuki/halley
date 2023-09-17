@@ -4,7 +4,7 @@ ICON=Q
 MODE=queue
 DIR=$HOME/.config/msync/msync_accounts/$ACCOUNT/queuedposts 
 
-ls $DIR --ignore='*.*' | \
+ls $DIR --ignore='*.*' | tac | \
 fzf --no-sort \
     --exact \
     --nth 1.. \
