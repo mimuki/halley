@@ -153,17 +153,17 @@ $HOME/.config/msync/msync_accounts/$2/home.list \
       day = UTCday + dayAdjustment
 
       # Different months have different lengths 
-      if ( UTCmonth == 04 || UTCmonth == 06 || UTCmonth == 09 || UTCmonth == 11 ) {
+      if ( UTCmonth == "04" || UTCmonth == "06" || UTCmonth == "09" || UTCmonth == "11" ) {
         monthLength = 30
         # needed for underflow
         prevMonthLength = 31
       } 
 
-      if ( UTCmonth == 01 || UTCmonth == 03 || UTCmonth == 05 || UTCmonth == 07 || UTCmonth == 08 || UTCmonth == 10 || UTCmonth == 12) { 
+      if ( UTCmonth == "01" || UTCmonth == "03" || UTCmonth == "05" || UTCmonth == "07" || UTCmonth == "08" || UTCmonth == "10" || UTCmonth == "12") { 
         monthLength == 31 
         # Underflow rules are less pretty here
-        if ( UTCmonth == 01 || UTCmonth == 08) { prevMonthLength = 31 } 
-        if ( UTCmonth == 03) {
+        if ( UTCmonth == "01" || UTCmonth == "08") { prevMonthLength = 31 } 
+        if ( UTCmonth == "03") {
           # the leap year rules are fucked up, actually
           if (UTCyear % 100 == 0) {
             if (UTCyear % 400 == 0) { 
@@ -171,12 +171,12 @@ $HOME/.config/msync/msync_accounts/$2/home.list \
             } else { prevMonthLength == 28 }
           } else { prevMonthLength == 29 }
         }
-        if ( UTCmonth == 05 || UTCmonth == 07 || UTCmonth == 10 || UTCmonth == 12) {
+        if ( UTCmonth == "05" || UTCmonth == "07" || UTCmonth == "10" || UTCmonth == "12") {
           prevMonthLength == 30
         }
       } 
       # February in particular is a bastard
-      if (UTCmonth == 02) {
+      if (UTCmonth == "02") {
         # the leap year rules are fucked up, actually
         if (UTCyear % 100 == 0) {
           if (UTCyear % 400 == 0) { 
@@ -184,6 +184,7 @@ $HOME/.config/msync/msync_accounts/$2/home.list \
           } else { monthLength == 28 }
         } else { monthLength == 29 }
       }
+
       if ( day > monthLength ) {
         day = day - monthLength
         monthAdjustment = 1
@@ -204,6 +205,8 @@ $HOME/.config/msync/msync_accounts/$2/home.list \
           yearAdjustment = -1
         }
       } 
+
+      month = sprintf("%02d", month)
       year = UTCyear + yearAdjustment
 
       # Needed because we check two files that may differ- if a post is in both the home TL
