@@ -9,24 +9,23 @@ $HOME/.config/msync/msync_accounts/$2/home.list \
     function bold(text) { return sprintf("\033[1m%s\033[0m", text) }
 
     # If the terminal doesnt support colour, dont try to show it
-    BEGIN { if ("NO_COLOR" in ENVIRON || match (ENVIRON["TERM"], "^(dumb|network|9term)")) noColour = 1 }
-
+    BEGIN { 
+      if ("NO_COLOR" in ENVIRON || match (ENVIRON["TERM"], "^(dumb|network|9term)")) {
+        noColour = 1
+      }
+    }
     /^notification id: / { next }
     /^at ([0-9]+-)+/ { next }
     /^status id: / { next } 
     /^url: / { next }
-
     # post author
     /^author: / {
       sub(/^author: /, " "); 
-
       if (noColour) { print }
       else { print bold(recolour("6", $0)) }
       next                    
     }                         
-
     /^reply to: / { next }
-    
     /^cw: / { 
       if (noColour) { print }
       else { print recolour("4", $0) }
@@ -83,59 +82,19 @@ $HOME/.config/msync/msync_accounts/$2/home.list \
     /^posted on: / { 
       sub(/^posted on: /, "")
       UTCdate = $0
-      # Convert current date to users itmezone
-      cmd = sprintf("date -d '%s'", UTCdate) 
+      # see man date for info on how to customize this
+      dateFormat = "%I:%M\\ %P\\ ·\\ %A\\ %d/%m/%Y"
+      # Example: 24 hour time
+      # dateFormat = " +%H:%M\\ ·\\ %A\\ %d/%m/%Y"
+
+      # Convert post date to users itmezone
+      cmd = sprintf("date -d '%s' +%s", UTCdate, dateFormat) 
       cmd | getline date
       close(cmd)
       next
     } 
 
     /^[0-9]+ favs \| / {
-      # Custom date format stuff! 
-      # Default format is Mon 18 Sep 2023 06:09:28 TIMEZONE
-      weekday = substr(date,  0, 3)
-      day     = substr(date,  5, 2)
-      month   = substr(date,  8, 3)
-      year    = substr(date, 12, 4)
-      hour    = substr(date, 17, 2)
-      minute  = substr(date, 20, 2)
-      second  = substr(date, 23, 2)
-
-      # Convert month to number
-      if      ( month == "Jan" ) { month =  1 }
-      else if ( month == "Feb" ) { month =  2 }
-      else if ( month == "Mar" ) { month =  3 }
-      else if ( month == "Apr" ) { month =  4 }
-      else if ( month == "May" ) { month =  5 }
-      else if ( month == "Jun" ) { month =  6 }
-      else if ( month == "Jul" ) { month =  7 }
-      else if ( month == "Aug" ) { month =  8 }
-      else if ( month == "Sep" ) { month =  9 }
-      else if ( month == "Oct" ) { month = 10 }
-      else if ( month == "Nov" ) { month = 11 }
-      else if ( month == "Dec" ) { month = 12 }
-
-      # 12 hour conversion
-      if ( hour == "00" ) { 
-        meridiem = "AM"; 
-        twelveHour = "12"
-      } else if ( hour == 12 ) {
-        meridiem = "PM"
-        twelveHour = "12"
-      } else if ( hour < 12 ) { 
-        meridiem = "AM" 
-        twelveHour = hour
-      } else {
-        meridiem = "PM"
-        twelveHour = hour - 12
-      }
-
-      # Change this to customize the format
-      date = sprintf("%02d", twelveHour) ":" sprintf("%02d", minute) " " meridiem " · " weekday " " sprintf("%02d", day) "/" sprintf("%02d", month) "/" year
-
-      # Replace with this one for 24 hour
-      # date = sprintf("%02d", hour) ":" sprintf("%02d", minute) " · " weekday " " sprintf("%02d", day) "/" sprintf("%02d", month) "/" year
-
       # Needed because we check two files that may differ- if a post is in both the home TL
       # and in a notification, the number of replies can vary causing both to get printed
       if (!printed) {
