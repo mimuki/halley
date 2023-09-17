@@ -82,138 +82,65 @@ $HOME/.config/msync/msync_accounts/$2/home.list \
     # Timestamps
     /^posted on: / { 
       sub(/^posted on: /, "")
-      UTCday    = substr($0, 9, 2)
-      UTCmonth  = substr($0, 6, 2)
-      UTCyear   = substr($0, 0, 4)
-      UTChour   = substr($0, 12, 2)
-      UTCminute = substr($0, 15, 2)
-
-      # UTC offset as either - or + (ahead or behind)
-      cmd = "date +%z | head -c 1"
-      cmd | getline offsetDirection
-      close(cmd)
-      # Current hour (24h)
-      cmd = "date +%z | head -c 3 | tail -c 2"
-      cmd | getline offsetHour
-      close(cmd)
-      # Current minute
-      cmd = "date +%z | head -c 5 | tail -c 2"
-      cmd | getline offsetMinute
+      UTCdate = $0
+      # Convert current date to users itmezone
+      cmd = sprintf("date -d '%s'", UTCdate) 
+      cmd | getline date
       close(cmd)
       next
     } 
 
     /^[0-9]+ favs \| / {
-      # This giant wall handles adjusting msync timezone to your timezone
-      if (offsetDirection == "+") { minute = UTCminute + offsetMinute }
-      if (offsetDirection == "-") { minute = UTCminute - offsetMinute }
-      # if your minute offset makes something an hour later...
-      if ( minute > 59 ) { 
-        minute = minute - 60
-        hourAdjustment = 1
-      } else { 
-        # if your offset makes something an hour earlier
-        # idk if this timezone even exists, but still.
-        if ( minute < 0 ) {
-          minute = minute + 60
-          hourAdjustment = -1
-        } else { hourAdjustment = 0 }
-      }
+      # Custom date format stuff! 
+      # Default format is Mon 18 Sep 2023 06:09:28 TIMEZONE
+      weekday = substr(date,  0, 3)
+      day     = substr(date,  5, 2)
+      month   = substr(date,  8, 3)
+      year    = substr(date, 12, 4)
+      hour    = substr(date, 17, 2)
+      minute  = substr(date, 20, 2)
+      second  = substr(date, 23, 2)
 
-      # add leading zeroes if needed:
-      minute = sprintf("%02d", minute)
+      # Convert month to number
+      if      ( month == "Jan" ) { month =  1 }
+      else if ( month == "Feb" ) { month =  2 }
+      else if ( month == "Mar" ) { month =  3 }
+      else if ( month == "Apr" ) { month =  4 }
+      else if ( month == "May" ) { month =  5 }
+      else if ( month == "Jun" ) { month =  6 }
+      else if ( month == "Jul" ) { month =  7 }
+      else if ( month == "Aug" ) { month =  8 }
+      else if ( month == "Sep" ) { month =  9 }
+      else if ( month == "Oct" ) { month = 10 }
+      else if ( month == "Nov" ) { month = 11 }
+      else if ( month == "Dec" ) { month = 12 }
 
-      if (offsetDirection == "+") { hour = UTChour + offsetHour + hourAdjustment }
-      if (offsetDirection == "-") { hour = UTChour - offsetHour + hourAdjustment }
-
-      # if your hour offset makes it a day later...
-      if ( hour > 23) {
-        hour = hour - 24
-        dayAdjustment = 1
-      } else { 
-        # if your hour offset makes it a day earlier
-        if (hour < 0) {
-          hour = hour + 24
-          dayAdjustment = -1
-        # no change to day needed
-        } else { 
-          dayAdjustment = 0 
-        }
-      }
-
-      # after hour adjustments, do AM/PM handling
-      # comment this out (and remove later references to meridiem) for 24h
-      if ( hour < 12 ) { 
+      # 12 hour conversion
+      if ( hour == "00" ) { 
+        meridiem = "AM"; 
+        twelveHour = "12"
+      } else if ( hour == 12 ) {
+        meridiem = "PM"
+        twelveHour = "12"
+      } else if ( hour < 12 ) { 
         meridiem = "AM" 
+        twelveHour = hour
       } else {
         meridiem = "PM"
-        hour = hour - 12
-        # 12PM noon
-        if (hour == 0) { hour = 12 }
-      }
-         
-      day = UTCday + dayAdjustment
-
-      # Different months have different lengths 
-      if ( UTCmonth == "04" || UTCmonth == "06" || UTCmonth == "09" || UTCmonth == "11" ) {
-        monthLength = 30
-        # needed for underflow
-        prevMonthLength = 31
-      } 
-
-      if ( UTCmonth == "01" || UTCmonth == "03" || UTCmonth == "05" || UTCmonth == "07" || UTCmonth == "08" || UTCmonth == "10" || UTCmonth == "12") { 
-        monthLength == 31 
-        # Underflow rules are less pretty here
-        if ( UTCmonth == "01" || UTCmonth == "08") { prevMonthLength = 31 } 
-        if ( UTCmonth == "03") {
-          # the leap year rules are fucked up, actually
-          if (UTCyear % 100 == 0) {
-            if (UTCyear % 400 == 0) { 
-              prevMonthLength == 29
-            } else { prevMonthLength == 28 }
-          } else { prevMonthLength == 29 }
-        }
-        if ( UTCmonth == "05" || UTCmonth == "07" || UTCmonth == "10" || UTCmonth == "12") {
-          prevMonthLength == 30
-        }
-      } 
-      # February in particular is a bastard
-      if (UTCmonth == "02") {
-        # the leap year rules are fucked up, actually
-        if (UTCyear % 100 == 0) {
-          if (UTCyear % 400 == 0) { 
-            monthLength == 29
-          } else { monthLength == 28 }
-        } else { monthLength == 29 }
+        twelveHour = hour - 12
       }
 
-      if ( day > monthLength ) {
-        day = day - monthLength
-        monthAdjustment = 1
-      } else { 
-        if ( day < 0 ) { 
-          day = day + prevMonthLength
-          monthAdjustment = -1
-        } else { monthAdjustment = 0 }
-      }
+      # Change this to customize the format
+      date = sprintf("%02d", twelveHour) ":" sprintf("%02d", minute) " " meridiem " · " weekday " " sprintf("%02d", day) "/" sprintf("%02d", month) "/" year
 
-      month = UTCmonth + monthAdjustment
-      if (month > 12) {
-        month = month - 12
-        yearAdjustment = 1
-      } else { 
-        if (month < 0) { 
-          month = month + 12
-          yearAdjustment = -1
-        }
-      } 
-      year = UTCyear + yearAdjustment
+      # Replace with this one for 24 hour
+      # date = sprintf("%02d", hour) ":" sprintf("%02d", minute) " · " weekday " " sprintf("%02d", day) "/" sprintf("%02d", month) "/" year
 
       # Needed because we check two files that may differ- if a post is in both the home TL
       # and in a notification, the number of replies can vary causing both to get printed
       if (!printed) {
         sub(/^[0-9]+ favs \| [0-9]+ boosts \| /, ""); 
-        print visibility, $(NF-1), "replies · " hour ":"  minute " " meridiem " · " day "/" month "/" year; 
+        print visibility, $(NF-1), "replies · " date; 
         printed=1
       }
       next; 
