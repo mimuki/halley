@@ -7,9 +7,6 @@ Hacked extensively to do strange things- features are duct taped on, and will br
 The icons assume you're using <https://github.com/slavfox/Cozette>, and a few icons are PUA characters. My bad.
 ## Screenshots
 
-A picture is worth a thousands words, right
-
-
 ![viewing the home timeline, with highlighted mentions and hashtags](./example.png)
 
 ![demonstration of timeline search, showing a post from Robert Kingett about tech bros and ebooks](./filtered.png)
@@ -20,24 +17,15 @@ A picture is worth a thousands words, right
 > ./msync_fzf yourUsername@example.com
 ```
 
-FZF launches with all statuses, last one at the bottom. Here's an example of line:
+When a line is highlighted with fzf, the post is displayed in the preview window below (preview window togglable with ctrl+space)
 
-```
-[1438] cw: crime · Rob Ricci
-```
-
-- an index that makes it easier to follow when updating the list
-- the content warning, if there is one
-- the author's nickname (the original has more info, but that's not my jam)
-
-
-When a line is highlighted with fzf, the post is displayed in the preview window.
-
-To interact with your instance, you need to install and use msync. This allows offline reading and queuing of interactions. To synchronize, run `msync sync`
+To see posts and interact with them, you need to install & configure msync. To synchronize, run `msync sync`
 
 ## Bonus Features
 
 Multi account support- you can browse the timeline of, boost, favourite, and sync a specific account, instead of every account you have set up with msync.
+
+Notification browser- press ctrl-n to browse notifications (you can interact with them jut like your home feed, too!)
 
 Boosted posts get filtered out, since they only show a link to the original post anyway.
 

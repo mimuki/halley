@@ -1,7 +1,18 @@
 #!/usr/bin/env rc
-
 ACCOUNT=$1 
-./list.awk $ACCOUNT | \
+MODE=$2
+
+# Default to home feed
+if (~ $MODE ()) { MODE=home }
+
+# icon indicators
+if (~ $MODE home) { ICON= }
+if (~ $MODE notifications) { ICON= }
+
+# problem: this can't work because * expands based on current dir
+# if (~ $ACCOUNT ()) { ACCOUNT='*' }
+
+./list.awk $ACCOUNT $MODE | \
 fzf --no-sort \
     --exact \
     --nth 1.. \
@@ -14,7 +25,7 @@ fzf --no-sort \
     --bind 'F5:reload(msync sync -m 3 -a $ACCOUNT > /dev/null; ./list.rc $ACCOUNT)' \
     --bind 'ctrl-f:execute-silent(msync queue fav {1} --account $ACCOUNT)' \
     --bind 'ctrl-b:execute-silent(msync queue boost {1} --account $ACCOUNT)' \
-    --bind 'ctrl-n:execute(./notif_fzf.rc $ACCOUNT)'\
+    --bind 'ctrl-n:execute(./msync_fzf.rc $ACCOUNT notifications)'\
     --bind 'ctrl-p:execute(./post.sh $ACCOUNT)'\
     --bind 'ctrl-r:execute(./post.sh $ACCOUNT {1})'\
     --bind 'ctrl-e:first' \
@@ -26,7 +37,7 @@ fzf --no-sort \
     --info=inline-right\
     --no-scrollbar\
     --scroll-off=1\
-    --preview-label='  '$ACCOUNT' '\
+    --preview-label=' '$ICON' '$ACCOUNT' '\
     --preview-label-pos=4\
     --header-first \
     --exit-0
