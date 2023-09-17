@@ -1,7 +1,7 @@
 #!/usr/bin/env rc
 
 ACCOUNT=$1 
-./list.rc $ACCOUNT | \
+./list.sh $ACCOUNT | \
 fzf --no-sort \
     --exact \
     --nth 1.. \
