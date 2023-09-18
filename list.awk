@@ -21,12 +21,12 @@ match($0, /author: ([^\n]+) \((@[^\n]+)\)/, m) {
 match($0, /(([0-9]+-?)+)T([0-9]+:[0-9]+):[0-9]+.[0-9]+Z, ([^\n]+)/, m) {
   if (mode == "notifications") { 
     for (i in m) {
-      if      (m[i] ~ "favorited") { icon = "󰋑 " }
-      else if (m[i] ~ "boosted"  ) { icon = "! " }
+      if      (m[i] ~ "favorited") { icon = "* " }
+      else if (m[i] ~ "boosted"  ) { icon = "& " }
       else if (m[i] ~ "mentioned") { icon = "@ " }
       else if (m[i] ~ "poll"     ) { icon = "/ " }
       else if (m[i] ~ "?"        ) { icon = "? " }
-      else    { icon = "???" }
+      else    { icon = "x " }
       # hope that no one uses (@ in their nick
       # my other regex was more good but for some reason was not working
       split(m[4], u, "\\(@")
