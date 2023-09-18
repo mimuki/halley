@@ -25,7 +25,7 @@ then
   # ...arguably, this is a feature
   if [ $MODE != "queue" ]
   then
-    AUTHOR="$(awk "/^status id: $REPLYTO/ {f=1} f && /^-----/ {exit} f && match(\$0, /author: ([^\n]+) \((@[^\n]+)\)/, m) {print m[2]; exit }" $DIR/home.list)\<Space>"
+    AUTHOR="$(awk "/^status id: $REPLYTO/ {f=1} f && /^-----/ {exit} f && match(\$0, /author: ([^\n]+) \((@[^\n]+)\)/, m) {print m[2]; exit }" $DIR/notifications.list $DIR/home.list)\<Space>"
   else
     # If it's in your queue, the author is you
     AUTHOR="@${ACCOUNT%@*}\<Space>"

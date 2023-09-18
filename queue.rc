@@ -1,6 +1,6 @@
 #!/usr/bin/env rc
 ACCOUNT=$1 
-ICON=Q
+ICON=queue:
 MODE=queue
 DIR=$HOME/.config/msync/msync_accounts/$ACCOUNT/queuedposts 
 

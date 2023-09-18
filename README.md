@@ -1,12 +1,9 @@
 # msync_fzf
 
-A fzf-based fedi timeline browser, for Mastodon and anything that supports the Mastodon API. Uses msync at <https://github.com/Kansattica/msync> for actual interaction, and fzf at <https://github.com/junegunn/fzf> for presentation: this repo is just a bunch of scripts to glue it all.
-
-Hacked extensively to do strange things- features are duct taped on, and will break if you look at them funny. The original is <https://git.sr.ht/~rakoo/msync_fzf>, if you want that.
-
-The icons assume you're using <https://github.com/slavfox/Cozette>, and a few icons are PUA characters. My bad.
+A fediverse timeline browser, for Mastodon and anything that supports the Mastodon API. Uses msync at <https://github.com/Kansattica/msync> for actual interaction, and fzf at <https://github.com/junegunn/fzf> for presentation: this repo is just a bunch of scripts to glue it all. Originally forked from <https://git.sr.ht/~rakoo/msync_fzf>.
 
 ## Screenshots
+(out of date)
 
 ![viewing the home timeline, with highlighted mentions and hashtags](./example.png)
 ![viewing the notifications list](./notifications.png)
@@ -15,13 +12,15 @@ The icons assume you're using <https://github.com/slavfox/Cozette>, and a few ic
 
 ## Usage
 
+This tool relies on msync, which you need to install & configure first.
+
+Download this repository however you prefer to do that (click the green Code button if you're unsure how), unzip that file if needed, and with a terminal open in the same directory as the files, run:
+
 ```sh
-> ./msync_fzf yourUsername@example.com
+./msync_fzf yourUsername@example.com
 ```
 
-When a line is highlighted with fzf, the post is displayed in the preview window below (preview window togglable with ctrl+space)
-
-To see posts and interact with them, you need to install & configure msync. To synchronize, run `msync sync`
+When a line is highlighted, the post is displayed in the preview window below (preview window togglable with ctrl+space)
 
 ## Bonus Features
 
@@ -29,9 +28,11 @@ Multi account support- you can browse the timeline of, boost, favourite, and syn
 
 Notification browser- press ctrl-n to browse notifications (you can interact with them jut like your home feed, too!)
 
+Queue browser- press ctrl-q to browse posts you've written but haven't been posted yet. (WIP feature)
+
 Boosted posts get filtered out, since they only show a link to the original post anyway.
 
-Content warnings that hide the post by default! To see the post, wait 5 seconds and it'll display the contents.
+Content warnings that hide the post by default! To see the post, wait 5 seconds and it'll display the contents. 
 
 Write posts & replies!
 

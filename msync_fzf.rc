@@ -6,8 +6,8 @@ MODE=$2
 if (~ $MODE ()) { MODE=home }
 
 # icon indicators
-if (~ $MODE home) { ICON= }
-if (~ $MODE notifications) { ICON= }
+if (~ $MODE home) { ICON=home: }
+if (~ $MODE notifications) { ICON=notifs: }
 
 # problem: this can't work because * expands based on current dir
 # if (~ $ACCOUNT ()) { ACCOUNT='*' }
