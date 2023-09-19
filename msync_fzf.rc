@@ -22,7 +22,7 @@ fzf --no-sort \
     --preview './preview.awk {1} $ACCOUNT' \
     --bind 'E:preview-down' \
     --bind 'I:preview-up' \
-    --bind 'F5:reload(msync sync -m 3 -a $ACCOUNT > /dev/null; ./list.rc $ACCOUNT)' \
+    --bind 'F5:reload(msync sync -m 3 -a $ACCOUNT > /dev/null; ./list.awk $ACCOUNT)' \
     --bind 'ctrl-f:execute-silent(msync queue fav {1} --account $ACCOUNT)' \
     --bind 'ctrl-b:execute-silent(msync queue boost {1} --account $ACCOUNT)' \
     --bind 'ctrl-n:execute(./msync_fzf.rc $ACCOUNT notifications)'\
