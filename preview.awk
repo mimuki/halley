@@ -112,8 +112,7 @@ $HOME/.config/msync/msync_accounts/$2/home.list \
       # and in a notification, the number of replies can vary causing both to get printed
       if (!printed) {
         sub(/^[0-9]+ favs \| [0-9]+ boosts \| /, ""); 
-        if (pollInfo) { print pollInfo }
-        print visibility, $(NF-1), "replies · " date; 
+        print pollInfo, visibility, $(NF-1), "replies · " date; 
         printed=1
       }
       next; 
