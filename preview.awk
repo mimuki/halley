@@ -14,6 +14,7 @@ $HOME/.config/msync/msync_accounts/$2/home.list \
         noColour = 1
       }
     }
+
     /^notification id: / { next }
     /^at ([0-9]+-)+/ { next }
     /^status id: / { next } 
@@ -65,10 +66,23 @@ $HOME/.config/msync/msync_accounts/$2/home.list \
       altText=1
     }
 
+    /^poll id: / { print ""; next }
+
+    /^expires at: / {
+      sub(/^expires at: /, "")
+      expiry = $0
+      pollFormat = "%I:%M\\ %P\\ on\\ %A\\ %d/%m/%Y"
+      cmd = sprintf("date -d '%s' +%s", expiry, pollFormat) 
+      cmd | getline expiry
+      close(cmd)
+      pollInfo = sprintf("\n(poll ends at %s)", expiry)
+      next
+    }
     /^visibility: / {
       post=0;
       altText=0
     }
+    
     post
     altText
 
@@ -86,7 +100,6 @@ $HOME/.config/msync/msync_accounts/$2/home.list \
       dateFormat = "%I:%M\\ %P\\ ·\\ %A\\ %d/%m/%Y"
       # Example: 24 hour time
       # dateFormat = " +%H:%M\\ ·\\ %A\\ %d/%m/%Y"
-
       # Convert post date to users itmezone
       cmd = sprintf("date -d '%s' +%s", UTCdate, dateFormat) 
       cmd | getline date
@@ -99,6 +112,7 @@ $HOME/.config/msync/msync_accounts/$2/home.list \
       # and in a notification, the number of replies can vary causing both to get printed
       if (!printed) {
         sub(/^[0-9]+ favs \| [0-9]+ boosts \| /, ""); 
+        if (pollInfo) { print pollInfo }
         print visibility, $(NF-1), "replies · " date; 
         printed=1
       }
