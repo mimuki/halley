@@ -19,7 +19,7 @@ fzf --no-sort \
     --bind 'ctrl-n:execute(./msync_fzf.rc $ACCOUNT notifications)'\
     --bind 'ctrl-v:execute(vim $DIR/{1})' \
     --bind 'ctrl-p:execute(./post.sh $ACCOUNT)'\
-    --bind 'ctrl-r:execute(./post.sh $ACCOUNT {1})'\
+    --bind 'ctrl-r:execute(./post.sh $ACCOUNT {1} queue)'\
     --bind 'ctrl-e:first' \
     --bind 'ctrl-i:last' \
     --bind 'ctrl-space:change-preview-window(hidden|)' \

@@ -2,6 +2,7 @@ ACCOUNT=$1
 # the %_* keeps everything before an _
 # so the entire ID for normal posts, and the actual ID for queued posts
 # (which otherwise would get the entire filename, like 2_10:48)
+REPLYFILENAME=$2
 REPLYTO=${2%_*}
 MODE=$3
 DIR=$HOME/.config/msync/msync_accounts/$ACCOUNT/
@@ -17,13 +18,18 @@ TITLE="${ID}_${TIME}"
 if [ -n "$REPLYTO" ]
 then
   # awk to check if the status has a CW
-  # then cut off the "cw: " part if it does
+  # then cut off the "cw: " part if it doee
+  if [ "$MODE" != "queue" ]
+  then
   CW="$(awk "/^status id: $REPLYTO/ {f=1} f && /^-----/ {exit} f && /cw:/ {print; exit}" $DIR/home.list | cut -c 5-)"
+  else
+    CW="$(awk "/cw=/ {print; exit}" $DIR/queuedposts/$REPLYFILENAME | cut -c 4-)"
+  fi
   # Get the @ of who you're replying to
   # This doesn't automatically mention other people
   # like people who the post mentions (that arent the poster)
   # ...arguably, this is a feature
-  if [ $MODE != "queue" ]
+  if [ "$MODE" != "queue" ]
   then
     AUTHOR="$(awk "/^status id: $REPLYTO/ {f=1} f && /^-----/ {exit} f && match(\$0, /author: ([^\n]+) \((@[^\n]+)\)/, m) {print m[2]; exit }" $DIR/notifications.list $DIR/home.list)\<Space>"
   else
