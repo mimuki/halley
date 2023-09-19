@@ -21,7 +21,7 @@ BEGIN { if ("NO_COLOR" in ENVIRON || match (ENVIRON["TERM"], "^(dumb|network|9te
     sub(/cw=/, "cw: ")
     if (noColour) { print }
     else { print recolour("4", $0) }
-    system("sleep " 5) ;
+    # system("sleep " 5) ;
     next
   }
 
