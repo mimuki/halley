@@ -27,9 +27,10 @@ match($0, /(([0-9]+-?)+)T([0-9]+:[0-9]+):[0-9]+.[0-9]+Z, ([^\n]+)/, m) {
       else if (m[i] ~ "poll"     ) { icon = "/ " }
       else if (m[i] ~ "?"        ) { icon = "? " }
       else    { icon = "x " }
-      # hope that no one uses (@ in their nick
-      # my other regex was more good but for some reason was not working
-      split(m[4], u, "\\(@")
+      # split at @ to get the username
+      split(m[4], u, "@")
+      # sometimes theres a trailing bracket and i dont know why. but this fixes it
+      split(u[2], u, "\\)")
       username=u[1]
     }
     post[idx++] = sprintf(icon username)
