@@ -1,25 +1,34 @@
 #!/usr/bin/env rc
 ACCOUNT=$1 
-ICON=queue:
-MODE=queue
-DIR=$HOME/.config/msync/msync_accounts/$ACCOUNT/queuedposts 
+MODE=$2
 
-ls $DIR --ignore='*.*' | tac | \
+# Default to home feed
+if (~ $MODE ()) { MODE=home }
+
+# icon indicators
+if (~ $MODE home) { ICON=home: }
+if (~ $MODE notifications) { ICON=notifs: }
+
+# problem: this can't work because * expands based on current dir
+# if (~ $ACCOUNT ()) { ACCOUNT='*' }
+
+./scripts/list.awk $ACCOUNT $MODE | \
 fzf --no-sort \
     --exact \
     --nth 1.. \
+    --with-nth 2.. \
     --track \
     --preview-window bottom:wrap,80%,border-double \
-    --preview './queuepreview.awk {1}' \
+    --preview './scripts/preview.awk {1} $ACCOUNT' \
     --bind 'E:preview-down' \
     --bind 'I:preview-up' \
-    --bind 'F5:reload(msync sync -m 3 -a $ACCOUNT > /dev/null; ./list.rc $ACCOUNT)' \
+    --bind 'F5:reload(msync sync -m 3 -a $ACCOUNT > /dev/null; ./scripts/list.awk $ACCOUNT)' \
     --bind 'ctrl-f:execute-silent(msync queue fav {1} --account $ACCOUNT)' \
     --bind 'ctrl-b:execute-silent(msync queue boost {1} --account $ACCOUNT)' \
-    --bind 'ctrl-n:execute(./msync_fzf.rc $ACCOUNT notifications)'\
-    --bind 'ctrl-v:execute(vim $DIR/{1})' \
-    --bind 'ctrl-p:execute(./post.sh $ACCOUNT)'\
-    --bind 'ctrl-r:execute(./post.sh $ACCOUNT {1} queue)'\
+    --bind 'ctrl-n:execute(./halley.rc $ACCOUNT notifications)'\
+    --bind 'ctrl-p:execute(./scripts/post.sh $ACCOUNT)'\
+    --bind 'ctrl-q:execute(./scripts/queue.rc $ACCOUNT)'\
+    --bind 'ctrl-r:execute(./scripts/post.sh $ACCOUNT {1} $MODE)'\
     --bind 'ctrl-e:first' \
     --bind 'ctrl-i:last' \
     --bind 'ctrl-space:change-preview-window(hidden|)' \

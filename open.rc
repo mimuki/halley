@@ -1,7 +1,0 @@
-#!/usr/bin/env rc
-
-
-url=`{awk 'BEGIN {RS="--------------\n"} /status id: '$1'/ {print}' $HOME/.config/msync/msync_accounts/*/home.list \
-	| awk 'match($0, /url: (.*)/, m) {print m[1]}'}
-
-xdg-open $url
