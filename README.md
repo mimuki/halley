@@ -47,7 +47,7 @@ Write posts & replies!
 - ctrl-r to write and queue a reply to the selected post
 - ctrl-b to queue boosting a post
 - ctrl-f to queue favouriting a post
-- ctrl-space to toggle the post preview (useful if the next post has a CW you don't want to open)
+- ctrl-space to toggle the post preview
 - ctrl-e to jump to oldest post
 - ctrl-i to jump to newest
 - shift-e to scroll preview down
