@@ -2,6 +2,10 @@
 
 A fediverse timeline browser, for Mastodon and anything that supports the Mastodon API. Uses msync at <https://github.com/Kansattica/msync> for actual interaction, and fzf at <https://github.com/junegunn/fzf> for presentation: this repo is just a bunch of scripts to glue it all. Originally forked from <https://git.sr.ht/~rakoo/msync_fzf>.
 
+The point of Halley is to *not* be like other fedi clients. It's not constantly updating in the background or full of fancy features. It's designed for you to sync every so often (maybe a few times a day, whenever you get Internet access, whatever) and browse that static list of posts until you're ready to sync again. I use it to help have a healthier online/offline balance, and that's not for everyone. Ask your doctor if Halley is right for you.
+
+Currently this is perfectly usable for daily browsing, but some important functionality is missing, like editing account settings, moderation, automated post filtering, etc. 
+
 ## Screenshots
 
 ![searching the home timeline](./images/filtered.png)
@@ -39,7 +43,7 @@ Write posts & replies!
 
 ## Shortcuts
 
-- Start typing to search usernames and content warnings. Case insensitive, use a ! to exclude your search (e.g. !cw for showing all posts that don't have a CW)
+- Start typing to search usernames and content warnings. Case insensitive, use a ! to exclude your search (e.g. `!cw` for showing all posts that don't have a CW)
 - F5 syncs the current account (though I recommend adding `msync sync` to your crontab, or otherwise automating post syncing instead of using this)
 - ctrl-n to view notifications (you can exclude boosts/favs/polls in msync's settings, or filter by searching `!*` (no favs), `@` (only mentions), and so on)
 - ctrl-q to view queued posts (then ctrl-v to edit a post) 
@@ -57,4 +61,4 @@ Write posts & replies!
 
 Parity Public License 7.0.0
 
-See [LICENSE](./LICENSE) for the full text, or <https://paritylicense.com/versions/7.0.0.html> for more details
+[The full details of the license are included in this repository](./LICENSE), or available on the parity licence website: <https://paritylicense.com/versions/7.0.0.html>
