@@ -36,7 +36,7 @@ $HOME/.config/msync/msync_accounts/$2/home.list \
       }
 
     /^attached:.*$/ { next } 
-    /^http.*$/ { next } 
+    /^http.*$/ { print recolour("6", $0); next }
 
     (!noColour) {
       # Highlight mentions
