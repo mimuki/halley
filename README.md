@@ -40,7 +40,7 @@ Write posts & replies!
 ## Shortcuts
 
 - Start typing to search usernames and content warnings. Case insensitive, use a ! to exclude your search (e.g. !cw for showing all posts that don't have a CW)
-- F5 syncs the current account
+- F5 syncs the current account (though I recommend adding `msync sync` to your crontab, or otherwise automating post syncing instead of using this)
 - ctrl-n to view notifications (you can exclude boosts/favs/polls in msync's settings, or filter by searching `!*` (no favs), `@` (only mentions), and so on)
 - ctrl-q to view queued posts (then ctrl-v to edit a post) 
 - ctrl-p to write and queue a post
