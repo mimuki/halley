@@ -4,9 +4,17 @@ $HOME/.config/msync/msync_accounts/$2/home.list \
   | awk '!a[$0]++' \
   | awk '
     # Set text colour, using terminal colour codes
-    function recolour(colour, text) { return sprintf("\033[38;5;%03dm%s\033[0m", colour, text) }
-    # Bold text, can be stacked with recolour() 
-    function bold(text) { return sprintf("\033[1m%s\033[0m", text) }
+    function colour(format, colourCode, text) {
+      if (format == "fg") { return sprintf("\033[38;5;%03dm%s\033[0m", colourCode, text) }
+      if (format == "bg") { return sprintf("\033[48;5;%03dm%s\033[0m", colourCode, text) }
+    }
+    # Set text effects like bold and underline 
+    function style(format, text) {
+      if (format == "bold"  ) { return sprintf("\033[1m%s\033[0m", text) }
+      if (format == "line"  ) { return sprintf("\033[4m%s\033[0m", text) }
+      if (format == "strike") { return sprintf("\033[9m%s\033[0m", text) }
+      if (format == "blink" ) { return sprintf("\033[5m%s\033[0m", text) }
+    }
 
     # If the terminal doesnt support colour, dont try to show it
     BEGIN { 
@@ -23,30 +31,41 @@ $HOME/.config/msync/msync_accounts/$2/home.list \
     /^author: / {
       sub(/^author: /, "🐘"); 
       if (noColour) { print }
-      else { print bold(recolour("6", $0)) }
+      else { print colour("fg", "6", style("bold", $0)) }
       next                    
     }                         
     /^reply to: / { next }
     /^cw: / { 
       if (noColour) { print }
-      else { print recolour("4", $0) }
+      else { print colour("fg", "4", $0) }
 
       system("sleep " 5) ;
       next 
       }
 
     /^attached:.*$/ { next } 
-    /^http.*$/ { print recolour("6", $0); next }
+    /^http.*$/ { print colour("fg", "6", $0); next }
+
+    # works but prints the entire rest of the post,  need to mess with this another time
+    # #/`/{                                                   
+    #  s=$0
+    #  while (match(s, /([^`]*)`([^`]+)`/, arr)){
+    #    printf "%s%s", arr[1], bgColour("0", arr[2])
+    #    s=substr(s, RLENGTH+1) 
+    #  }
+    #  print s
+    #  next
+    #}1
 
     (!noColour) {
       # Highlight mentions
       for (i = 1; i <= NF; i++) {
-        s = gensub(/^(@[a-zA-Z0-9_\-.@]+)/, recolour("2", "\\1"), "g", $i)
+        s = gensub(/^(@[a-zA-Z0-9_\-.@]+)/, colour("fg", "2", "\\1"), "g", $i)
         $i = s
       }
       # Highlight hashtags
       for (i = 1; i <= NF; i++) {
-        s = gensub(/(#[a-zA-Z0-9_\-]+)/, recolour("5", "\\1"), "g", $i)
+        s = gensub(/(#[a-zA-Z0-9_\-]+)/, colour("fg", "5", "\\1"), "g", $i)
         $i = s
       }
     }
@@ -99,7 +118,7 @@ $HOME/.config/msync/msync_accounts/$2/home.list \
       # see man date for info on how to customize this
       dateFormat = "%I:%M\\ %P\\ ·\\ %A\\ %d/%m/%Y"
       # Example: 24 hour time
-      # dateFormat = " +%H:%M\\ ·\\ %A\\ %d/%m/%Y"
+      # dateFormat = "%H:%M\\ ·\\ %A\\ %d/%m/%Y"
       # Convert post date to users itmezone
       cmd = sprintf("date -d '%s' +%s", UTCdate, dateFormat) 
       cmd | getline date
