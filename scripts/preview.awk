@@ -21,7 +21,7 @@ $HOME/.config/msync/msync_accounts/$2/home.list \
     /^url: / { next }
     # post author
     /^author: / {
-      sub(/^author: /, " "); 
+      sub(/^author: /, "🐘"); 
       if (noColour) { print }
       else { print bold(recolour("6", $0)) }
       next                    
