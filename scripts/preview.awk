@@ -22,7 +22,6 @@ $HOME/.config/msync/msync_accounts/$2/home.list \
         noColour = 1
       }
     }
-
     /^notification id: / { next }
     /^at ([0-9]+-)+/ { next }
     /^status id: / { next } 

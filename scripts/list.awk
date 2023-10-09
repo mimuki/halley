@@ -3,7 +3,7 @@ MODE=$2
 awk --assign mode="$MODE" '
 BEGIN {RS="--------------"}
 
-/^\s*$/ {next}
+/^\s*$/ { next }
 # Skip boosts (TODO: make this optional and handle boosts properly)
 /boosted by: ([^\n]+)/ {next}
 
