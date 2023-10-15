@@ -1,8 +1,8 @@
-awk 'BEGIN {RS="--------------\n"} /status id: '$1'/ {print}' \
+gawk 'BEGIN {RS="--------------\n"} /status id: '$1'/ {print}' \
 $HOME/.config/msync/msync_accounts/$2/notifications.list \
 $HOME/.config/msync/msync_accounts/$2/home.list \
-  | awk '!a[$0]++' \
-  | awk '
+  | gawk '!a[$0]++' \
+  | gawk '
     # Set text colour, using terminal colour codes
     function colour(format, colourCode, text) {
       if (format == "fg") { return sprintf("\033[38;5;%03dm%s\033[0m", colourCode, text) }

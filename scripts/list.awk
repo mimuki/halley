@@ -1,6 +1,6 @@
 ACCOUNT=$1
 MODE=$2
-awk --assign mode="$MODE" '
+gawk -v mode="$MODE" '\
 BEGIN {RS="--------------"}
 
 /^\s*$/ { next }
@@ -45,7 +45,7 @@ match($0, /(([0-9]+-?)+)T([0-9]+:[0-9]+):[0-9]+.[0-9]+Z, ([^\n]+)/, m) {
   next
 }
 ' $HOME/.config/msync/msync_accounts/$ACCOUNT/$MODE.list \
-| awk '{
+| gawk '{
   printf $1 " [" NR "] "; \
   for (i = 2; i <= NF; i++) {printf $i " " }
   printf "\n" 

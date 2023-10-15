@@ -1,5 +1,5 @@
 less $DIR/$1 | \
-awk '
+gawk '
 BEGIN { if ("NO_COLOR" in ENVIRON || match (ENVIRON["TERM"], "^(dumb|network|9term)")) noColour = 1 }
   # Set text colour, using terminal colour codes
   function colour(format, colourCode, text) {
