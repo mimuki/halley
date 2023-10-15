@@ -10,7 +10,7 @@ DIR=$HOME/.config/msync/msync_accounts/$ACCOUNT/
 # Number of posts in the queue
 # checks all user directories, is a bit scuffed as a result
 # TODO: make this a bit less ugly
-ID=$((1+$(ls -l ${DIR}../*/queuedposts/ | grep -v .bak | grep '\-rw\-rw\-r\-\-'| wc -l)))
+ID=$((1+$(ls -l ${DIR}../*/queuedposts/ | grep -v .bak | grep '\-rw'| wc -l)))
 TIME=$(date +%H:%M)
 TITLE="${ID}_${TIME}"
 
