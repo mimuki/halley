@@ -30,7 +30,7 @@ $HOME/.config/msync/msync_accounts/$2/home.list \
     /^author: / {
       sub(/^author: /, "🐘"); 
       if (noColour) { print }
-      else { print colour("fg", "6", style("bold", $0)) }
+      else { print style("bold", $0) }
       next                    
     }                         
     /^reply to: / { next }

@@ -4,7 +4,7 @@ ICON=queue:
 MODE=queue
 DIR=$HOME/.config/msync/msync_accounts/$ACCOUNT/queuedposts 
 
-ls $DIR --ignore='*.*' | tac | \
+ls $DIR --ignore='*.bak' | tac | \
 fzf --no-sort \
     --exact \
     --nth 1.. \
@@ -23,7 +23,7 @@ fzf --no-sort \
     --bind 'ctrl-e:first' \
     --bind 'ctrl-i:last' \
     --bind 'ctrl-space:change-preview-window(hidden|)' \
-    --color 'hl:bright-green,hl+:bright-white,fg+:-1,bg+:bright-yellow,gutter:-1,border:bright-yellow,pointer:cyan,spinner:bright-magenta,preview-label:magenta,info:-1'\
+    --color 'hl:bright-green,hl+:bright-white,fg+:-1,bg+:white,gutter:-1,border:bright-yellow,pointer:cyan,spinner:bright-magenta,preview-label:magenta,info:-1'\
     -i \
     --border=none\
     --info=inline-right\

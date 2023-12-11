@@ -2,7 +2,7 @@ ACCOUNT=$1
 # the %_* keeps everything before an _
 # so the entire ID for normal posts, and the actual ID for queued posts
 # (which otherwise would get the entire filename, like 2_10:48)
-REPLYFILENAME=$2
+REPLYFILENAME=$2.md
 REPLYTO=${2%_*}
 MODE=$3
 DIR=$HOME/.config/msync/msync_accounts/$ACCOUNT/
@@ -12,7 +12,7 @@ DIR=$HOME/.config/msync/msync_accounts/$ACCOUNT/
 # TODO: make this a bit less ugly
 ID=$((1+$(ls -l ${DIR}../*/queuedposts/ | grep -v .bak | grep '\-rw'| wc -l)))
 TIME=$(date +%H:%M)
-TITLE="${ID}_${TIME}"
+TITLE="${ID}_${TIME}.md"
 
 # -n = if the length of the string is non-zero (you pressed the reply binding)
 if [ -n "$REPLYTO" ]
@@ -31,20 +31,20 @@ then
   # ...arguably, this is a feature
   if [ "$MODE" != "queue" ]
   then
-    AUTHOR="$(awk "/^status id: $REPLYTO/ {f=1} f && /^-----/ {exit} f && match(\$0, /author: ([^\n]+) \((@[^\n]+)\)/, m) {print m[2]; exit }" $DIR/notifications.list $DIR/home.list)\<Space>"
+    AUTHOR="$(awk "/^status id: $REPLYTO/ {f=1} f && /^-----/ {exit} f && match(\$0, /author: ([^\n]+) \((@[^\n]+)\)/, m) {print m[2]; exit }" $DIR/notifications.list $DIR/home.list)\<Space>\<Space>"
   else
     # If it's in your queue, the author is you
-    AUTHOR="@${ACCOUNT%@*}\<Space>"
+    AUTHOR="@${ACCOUNT%@*}\<Space>\<Space>"
   fi
   # TODO: this looks ugly, i should learn a better way
   if [ -n "$CW" ]
   then
-    msync generate --reply-to $REPLYTO --reply-id $ID --output $TITLE --content-warning "$CW"
+    msync generate --privacy private --reply-to $REPLYTO --reply-id $ID --output $TITLE --content-warning "$CW"
   else
-    msync generate --reply-to $REPLYTO --reply-id $ID --output $TITLE
+    msync generate --privacy private --reply-to $REPLYTO --reply-id $ID --output $TITLE
   fi
 else
-  msync generate --reply-id $ID --output $TITLE
+  msync generate --privacy private --reply-id $ID --output $TITLE
 fi
 
 
