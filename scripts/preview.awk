@@ -31,6 +31,10 @@ $HOME/.config/msync/msync_accounts/$2/home.list \
       sub(/^author: /, "🐘"); 
       if (noColour) { print }
       else { print style("bold", $0) }
+        # todo: this but magic
+      if ($0 == "🐘rats (@rats)") {
+        you = 1
+      }
       next                    
     }                         
     /^reply to: / { next }
@@ -38,7 +42,9 @@ $HOME/.config/msync/msync_accounts/$2/home.list \
       if (noColour) { print }
       else { print colour("fg", "4", $0) }
 
-      system("sleep " 5) ;
+      if (!you) {
+        system("sleep " 5) ;
+      }
       next 
       }
 
